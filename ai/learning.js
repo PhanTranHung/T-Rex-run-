@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function addSolution(output) {
         let inputs = common.getInputs(r);
         if (!solutions.length || inputs.distance < 600) {
-            console.info('new-solution', output, JSON.stringify(inputs));
+            // console.info('new-solution', output, JSON.stringify(inputs));
             solutions.push({i: inputs, o: output})
         }
     }
@@ -40,7 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return solutions
     }
 
-    // Put the JSON.stringify of getSolutions into data.js
-    window.getSolutions = getSolutions
+    function setNullSolution(){
+        solutions = [];
+    }
 
+    // console.log("aaaaa");
+    // Put the JSON.stringify of getSolutions into data.js
+    window.getSolutions = getSolutions;
+    window.setNullSolution = setNullSolution;
 });

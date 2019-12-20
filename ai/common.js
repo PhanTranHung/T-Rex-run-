@@ -23,17 +23,17 @@
     };
 
     common.getOutput = function getOutput(network, inputs) {
-        var output = {};
+        let output = {};
 
-        for (var i = 1; i < network.length; i++) {
-            var layer = network[i]
+        for (let i = 1; i < network.length; i++) {
+            let layer = network[i];
             output = {};
 
-            for (var nodeName in layer) {
-                var node = layer[nodeName];
-                var sum = node.bias
+            for (let nodeName in layer) {
+                let node = layer[nodeName];
+                let sum = node.bias;
 
-                for (var edgeName in node.weights) {
+                for (let edgeName in node.weights) {
                     sum += node.weights[edgeName] * inputs[edgeName]
                 }
                 output[nodeName] = (1 / (1 + Math.exp(-sum)))
@@ -46,13 +46,14 @@
     };
 
     common.shouldJump = function shouldJump(network, inputs) {
-        var output = common.getOutput(network, inputs);
+        if (!network) return false;
+        let output = common.getOutput(network, inputs);
         return output.jump > 0.5
     };
 
     common.extractIntelligence = function extractIntelligence(network) {
-        var values = [];
-        for (var i = 0; i <= 4; i++) {
+        let values = [];
+        for (let i = 0; i <= 4; i++) {
             values.push(network[1][i].bias);
             values.push(network[1][i].weights.speed);
             values.push(network[1][i].weights.distance);
@@ -60,6 +61,7 @@
             values.push(network[1][i].weights.height);
             values.push(network[1][i].weights.altitude)
         }
+
         values.push(network[2].jump.bias);
         values.push(network[2].jump.weights[0]);
         values.push(network[2].jump.weights[1]);
@@ -67,14 +69,14 @@
         values.push(network[2].jump.weights[3]);
         values.push(network[2].jump.weights[4]);
         return values
-    }
+    };
 
     common.generateIntelligence = function generateIntelligence(values) {
-        var generateNode = function generateNode(index, isFirstLayer) {
-            var offset = index * 6
-            var keys = isFirstLayer ? ['speed', 'distance', 'width', 'height', 'altitude'] : [0, 1, 2, 3, 4];
+        let generateNode = function generateNode(index, isFirstLayer) {
+            let offset = index * 6;
+            let keys = isFirstLayer ? ['speed', 'distance', 'width', 'height', 'altitude'] : [0, 1, 2, 3, 4];
             return {
-                bias: values[offset + 0],
+                bias: values[offset],
                 weights: {
                     [keys[0]]: values[offset + 1],
                     [keys[1]]: values[offset + 2],
